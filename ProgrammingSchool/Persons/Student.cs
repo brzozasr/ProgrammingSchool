@@ -6,21 +6,31 @@ namespace ProgrammingSchool.Persons
 {
     public class Student : Person
     {
-        public IModule Module { get; private set; }
+        public School School { get; private set; }
         public uint ModuleProgress { get; private set; }
 
-        public Student(string name, DateTime birthday, string phoneNo, IModule module, uint moduleProgress = 0) 
+        public Student(string name, DateTime birthday, string phoneNo, School school, uint moduleProgress = 0) 
             : base(name, birthday, phoneNo)
         {
-            Module = module;
             ModuleProgress = moduleProgress >= 100 ? 0 : moduleProgress;
+            School = school;
+            if (School.GetCurrentModule(Id) is var mod && mod is not null)
+            {
+                mod.AddPerson(this);
+            }
+            else
+            {
+                School.GetBasicModule().AddPerson(this);
+            }
         }
-
 
         public override void DoActivity()
         {
             uint progress = 10;
-            switch (Module.Name)
+            uint progressOTJ = 25;
+            var module = School.GetCurrentModule(Id);
+            
+            switch (module.Name)
             {
                 case ModuleName.Basic:
                     if (ModuleProgress < 100)
@@ -30,7 +40,9 @@ namespace ProgrammingSchool.Persons
                     else
                     {
                         ModuleProgress = 0;
-                        Module = new Web();
+                        module.RemovePerson(this);
+                        module = School.GetNextModule(module);
+                        module.AddPerson(this);
                     }
                     break;
                 case ModuleName.Web:
@@ -41,7 +53,9 @@ namespace ProgrammingSchool.Persons
                     else
                     {
                         ModuleProgress = 0;
-                        Module = new OOP();
+                        module.RemovePerson(this);
+                        module = School.GetNextModule(module);
+                        module.AddPerson(this);
                     }
                     break;
                 case ModuleName.OOP:
@@ -52,7 +66,9 @@ namespace ProgrammingSchool.Persons
                     else
                     {
                         ModuleProgress = 0;
-                        Module = new Advanced();
+                        module.RemovePerson(this);
+                        module = School.GetNextModule(module);
+                        module.AddPerson(this);
                     }
                     break;
                 case ModuleName.Advanced:
@@ -63,16 +79,106 @@ namespace ProgrammingSchool.Persons
                     else
                     {
                         ModuleProgress = 0;
-                        Module = new OTJ();
+                        module.RemovePerson(this);
+                        module = School.GetNextModule(module);
+                        module.AddPerson(this);
                     }
                     break;
                 case ModuleName.OTJ:
+                    if (ModuleProgress < 100)
+                    {
+                        ModuleProgress += progressOTJ;
+                    }
+                    else
+                    {
+                        ModuleProgress = 0;
+                        module.RemovePerson(this);
+                    }
                     break;
                 default:
                     ModuleProgress = 0;
-                    Module = new Basic();
+                    module.RemovePerson(this);
+                    module = School.GetBasicModule();
+                    module.AddPerson(this);
                     break;
             }
+
+        // public override void DoActivity()
+        // {
+        //     uint progress = 10;
+        //     uint progressOTJ = 25;
+        //     switch (Module.Name)
+        //     {
+        //         case ModuleName.Basic:
+        //             if (ModuleProgress < 100)
+        //             {
+        //                 ModuleProgress += progress;
+        //             }
+        //             else
+        //             {
+        //                 ModuleProgress = 0;
+        //                 Module.RemovePerson(this);
+        //                 Module = Module.GetNextModule(Module);
+        //                 Module.AddPerson(this);
+        //             }
+        //             break;
+        //         case ModuleName.Web:
+        //             if (ModuleProgress < 100)
+        //             {
+        //                 ModuleProgress += progress;
+        //             }
+        //             else
+        //             {
+        //                 ModuleProgress = 0;
+        //                 Module.RemovePerson(this);
+        //                 Module = Module.GetNextModule(Module);
+        //                 Module.AddPerson(this);
+        //             }
+        //             break;
+        //         case ModuleName.OOP:
+        //             if (ModuleProgress < 100)
+        //             {
+        //                 ModuleProgress += progress;
+        //             }
+        //             else
+        //             {
+        //                 ModuleProgress = 0;
+        //                 Module.RemovePerson(this);
+        //                 Module = Module.GetNextModule(Module);
+        //                 Module.AddPerson(this);
+        //             }
+        //             break;
+        //         case ModuleName.Advanced:
+        //             if (ModuleProgress < 100)
+        //             {
+        //                 ModuleProgress += progress;
+        //             }
+        //             else
+        //             {
+        //                 ModuleProgress = 0;
+        //                 Module.RemovePerson(this);
+        //                 Module = Module.GetNextModule(Module);
+        //                 Module.AddPerson(this);
+        //             }
+        //             break;
+        //         case ModuleName.OTJ:
+        //             if (ModuleProgress < 100)
+        //             {
+        //                 ModuleProgress += progressOTJ;
+        //             }
+        //             else
+        //             {
+        //                 ModuleProgress = 0;
+        //                 Module.RemovePerson(this);
+        //             }
+        //             break;
+        //         default:
+        //             ModuleProgress = 0;
+        //             Module.RemovePerson(this);
+        //             Module = Module.GetBasicModule();
+        //             Module.AddPerson(this);
+        //             break;
+        //     }
         }
     }
 }

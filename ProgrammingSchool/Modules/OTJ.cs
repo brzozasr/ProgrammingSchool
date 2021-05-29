@@ -1,10 +1,23 @@
+using System;
+using System.Collections.Generic;
+using ProgrammingSchool.Persons;
 using ProgrammingSchool.Utilities;
 
 namespace ProgrammingSchool.Modules
 {
-    public class OTJ : IModule
+    public class OTJ : Module
     {
-        public ModuleName Name => ModuleName.OTJ;
-        public ModuleLanguage UsedLanguage => ModuleLanguage.AllLanguages;
+        public override ModuleName Name => ModuleName.OTJ;
+        public override ModuleLanguage UsedLanguage => ModuleLanguage.AllLanguages;
+        public override List<Person> Persons { get; set; } = new();
+
+        private static readonly Lazy<OTJ> Lazy =
+            new Lazy<OTJ>(() => new OTJ());
+        
+        public static OTJ Instance => Lazy.Value;
+
+        private OTJ()
+        {
+        }
     }
 }

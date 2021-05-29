@@ -1,4 +1,7 @@
 ﻿using System;
+using ProgrammingSchool.Modules;
+using ProgrammingSchool.Persons;
+using ProgrammingSchool.Utilities;
 
 namespace ProgrammingSchool
 {
@@ -6,7 +9,11 @@ namespace ProgrammingSchool
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var school = new School();
+
+            var student = new Student("Jan", DateTime.Now, "+48 605 337 334", school);
+
+            Console.WriteLine(school.Modules[0].Persons[0].Name);
         }
     }
 }
