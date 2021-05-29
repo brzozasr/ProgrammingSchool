@@ -1,10 +1,11 @@
 namespace ProgrammingSchool.Utilities
 {
-    public enum Module
+    public enum ModuleName
     {
         Basic,
         Web,
         OOP,
-        Advanced
+        Advanced,
+        OTJ  // On The Job
     }
 }

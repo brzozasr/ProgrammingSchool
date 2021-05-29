@@ -14,5 +14,7 @@ namespace ProgrammingSchool.Persons
             Birthday = birthday;
             PhoneNo = phoneNo;
         }
+
+        public abstract void DoActivity();
     }
 }
