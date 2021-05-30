@@ -8,7 +8,7 @@ namespace ProgrammingSchool.Modules
     public class OTJ : Module
     {
         public override ModuleName Name => ModuleName.OTJ;
-        public override ModuleLanguage UsedLanguage => ModuleLanguage.AllLanguages;
+        public override ModuleLanguage UsedLanguage => ModuleLanguage.None;
         public override List<Person> Persons { get; set; } = new();
 
         private static readonly Lazy<OTJ> Lazy =

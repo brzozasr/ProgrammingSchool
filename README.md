@@ -2,6 +2,12 @@
 
 ## A console application written in C#
 
+## Screenshot
+
+![Screenshot](ProgrammingSchool/Screenshots/Screenshots.png?raw=true)
+
+## Description
+
 Let's model how a programming school works, that's always fun, right? 🙂
 In this programming school students should complete four modules: 
 (Programming Basics, Web, OOP, Advanced in this order). 

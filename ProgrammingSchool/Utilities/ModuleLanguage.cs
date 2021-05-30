@@ -10,7 +10,6 @@ namespace ProgrammingSchool.Utilities
         JavaSE,
         [Display(Name="Java EE")]
         JavaEE,
-        [Display(Name="All Languages")]
-        AllLanguages
+        None
     }
 }

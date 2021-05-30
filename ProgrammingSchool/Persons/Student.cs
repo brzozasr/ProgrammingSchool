@@ -8,19 +8,29 @@ namespace ProgrammingSchool.Persons
     {
         public School School { get; private set; }
         public uint ModuleProgress { get; private set; }
+        private Module _module { get; set; }
 
-        public Student(string name, DateTime birthday, string phoneNo, School school, uint moduleProgress = 0) 
+        public Student(string name, DateTime birthday, string phoneNo, School school, 
+            ModuleName moduleName = ModuleName.Basic, uint moduleProgress = 0) 
             : base(name, birthday, phoneNo)
         {
             ModuleProgress = moduleProgress >= 100 ? 0 : moduleProgress;
             School = school;
             if (School.GetCurrentModule(Id) is var mod && mod is not null)
             {
+                _module = mod;
                 mod.AddPerson(this);
+            }
+            else if (School.GetModuleByName(moduleName) is var mod1 && mod1 is not null)
+            {
+                _module = mod1;
+                mod1.AddPerson(this);
             }
             else
             {
-                School.GetBasicModule().AddPerson(this);
+                var module = School.GetBasicModule();
+                module.AddPerson(this);
+                _module = module;
             }
         }
 
@@ -35,70 +45,91 @@ namespace ProgrammingSchool.Persons
                 case ModuleName.Basic:
                     if (ModuleProgress < 100)
                     {
-                        ModuleProgress += progress;
+                        if (_module.IsMentorAvailable())
+                        {
+                            ModuleProgress += progress;
+                        }
                     }
                     else
                     {
                         ModuleProgress = 0;
                         module.RemovePerson(this);
                         module = School.GetNextModule(module);
+                        _module = module;
                         module.AddPerson(this);
                     }
                     break;
                 case ModuleName.Web:
                     if (ModuleProgress < 100)
                     {
-                        ModuleProgress += progress;
+                        if (_module.IsMentorAvailable())
+                        {
+                            ModuleProgress += progress;
+                        }
                     }
                     else
                     {
                         ModuleProgress = 0;
                         module.RemovePerson(this);
                         module = School.GetNextModule(module);
+                        _module = module;
                         module.AddPerson(this);
                     }
                     break;
                 case ModuleName.OOP:
                     if (ModuleProgress < 100)
                     {
-                        ModuleProgress += progress;
+                        if (_module.IsMentorAvailable())
+                        {
+                            ModuleProgress += progress;
+                        }
                     }
                     else
                     {
                         ModuleProgress = 0;
                         module.RemovePerson(this);
                         module = School.GetNextModule(module);
+                        _module = module;
                         module.AddPerson(this);
                     }
                     break;
                 case ModuleName.Advanced:
                     if (ModuleProgress < 100)
                     {
-                        ModuleProgress += progress;
+                        if (_module.IsMentorAvailable())
+                        {
+                            ModuleProgress += progress;
+                        }
                     }
                     else
                     {
                         ModuleProgress = 0;
                         module.RemovePerson(this);
                         module = School.GetNextModule(module);
+                        _module = module;
                         module.AddPerson(this);
                     }
                     break;
                 case ModuleName.OTJ:
                     if (ModuleProgress < 100)
                     {
-                        ModuleProgress += progressOTJ;
+                        if (_module.IsSalesPersonAvailable())
+                        {
+                            ModuleProgress += progressOTJ;
+                        }
                     }
                     else
                     {
                         ModuleProgress = 0;
                         module.RemovePerson(this);
+                        _module = null;
                     }
                     break;
                 default:
                     ModuleProgress = 0;
                     module.RemovePerson(this);
                     module = School.GetBasicModule();
+                    _module = module;
                     module.AddPerson(this);
                     break;
             }

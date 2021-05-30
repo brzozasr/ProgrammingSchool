@@ -33,5 +33,15 @@ namespace ProgrammingSchool.Modules
 
             return false;
         }
+
+        public bool IsMentorAvailable()
+        {
+            return Persons.OfType<Mentor>().Any();
+        }
+        
+        public bool IsSalesPersonAvailable()
+        {
+            return Persons.OfType<SalesPerson>().Any();
+        }
     }
 }
